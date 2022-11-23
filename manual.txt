@@ -1,0 +1,23 @@
+In deze handleiding leggen we uit hoe het SuperPy systeem gebruikt moet worden
+
+De invoer gaat via de command line input: Iedere opdracht begint met:
+
+python input.py 
+
+Hierachter volgt het commando. Er zijn verschillende commando's beschikbaar hieronder volgen commando's en hoe te gebruiken
+
+Commando: start
+invoer: python input.py start
+
+Met dit commando kan bij het eerste gebruik het hoofdbestand 'bought.csv' aangemaakt worden met de juiste headers. Er wordt eerst gechekt of dit bestand niet al bestaat
+
+Commando: buy
+Benodigde waardes: naam (is naam van het artikel), prijs (is inkoopprijs), expdate (is expiration date)
+De invoer kan door het volledig in te voeren of de eerste letter is voldoende. Hieronder 2 voorbeelden die hetzelfde resultaat zullen geven
+invoer: python input.py buy --naam appel --prijs 2 --expdate 2022-12-05
+invoer: python input.py buy -n peer -p 4 -e 2022-12-04
+
+Als resultaat krijg je: 
+Artikel: appel is toegevoegd aan de voorraad.
+
+Commando
