@@ -12,12 +12,90 @@ invoer: python input.py start
 Met dit commando kan bij het eerste gebruik het hoofdbestand 'bought.csv' aangemaakt worden met de juiste headers. Er wordt eerst gechekt of dit bestand niet al bestaat
 
 Commando: buy
-Benodigde waardes: naam (is naam van het artikel), prijs (is inkoopprijs), expdate (is expiration date)
-De invoer kan door het volledig in te voeren of de eerste letter is voldoende. Hieronder 2 voorbeelden die hetzelfde resultaat zullen geven
+Benodigde waardes: naam (is naam van het artikel), prijs (is inkoopprijs), expdate (is expiration date in formaat YYYY-MM-DD)
+
+De invoer kan door de naam van de waarde volledig in te voeren of de eerste letter is voldoende. Hieronder 2 voorbeelden die hetzelfde resultaat zullen geven
 invoer: python input.py buy --naam appel --prijs 2 --expdate 2022-12-05
 invoer: python input.py buy -n peer -p 4 -e 2022-12-04
 
-Als resultaat krijg je: 
+Als resultaat krijg je:
 Artikel: appel is toegevoegd aan de voorraad.
 
-Commando
+De status van de toegevoegde artikelen wordt 'voorraad'
+
+Commando: sell
+Benodigde waardes: naam (is naam van het artikel), prijs (is verkoopprijs)
+
+De invoer kan door de naam van de waarde volledig in te voeren of de eerste letter is voldoende. Hieronder 2 voorbeelden die hetzelfde resultaat zullen geven
+invoer: python input.py sell --naam appel --prijs 4
+invoer: python input.py sell -n peer -p 8
+
+Je krijgt een melding wanneer de verkoop gelukt is, deze ziet er als volgt uit:
+   Id artikel  prijs    date_exp    date_add    status verk_prijs mutatie_date
+9  10    peer    4.0  2022-12-04  2022-11-23  verkocht          8   2022-11-23
+
+De status van de toegevoegde artikelen wordt 'verkocht' met daarbij de datum waarop dit gebeurd is
+
+Indien het artikel niet beschikbaar is voor aankoop wordt dit gemeld, probeer je een artikel te verkopen die helemaal niet in het assortiment zit dan wordt dit ook vermeld.
+
+Commando: expired
+Wanneer je het artikelbestand wilt controleren op producten die expired zijn dan geef je het volgende commando:
+
+invoer: python input.py expired
+
+Er wordt gecontrolleerd of er producten nog de status 'voorraad' hebben die over datum zijn, is dat het geval dan wordt de status aangepast naar 'expired' met de datum dat dit gebeurd is.
+Voordat een product verkocht wordt, wordt eerst de expired functie uitgevoerd, dit om te voorkomen dat er een product verkocht wordt die expired is. 
+
+Commando: rapport
+Er zijn verschillende rapporten te genereren, aan te roepen met 'inventory', 'expired', 'omzet', 'opbrengst', 'compleet' hieronder leggen we uit hoe je de verschillende rapporten kunt genereren
+
+inventory, hierbij zijn twee opties, alles of aantal. Kies je voor alles dan krijg je de uitgebreide lijst met alle voorraad artikelen, kies je voor aantal dan krijg je te zijn hoeveel er van elke artikel op voorraad is.
+Hierbij staat ook de inkoopwaarde vermeld
+
+invoer: python input.py rapport inventory -v alles
+invoer: python input.py rapport inventory -v aantal
+
+expired, hiermee kan opgevraagd worden welke artikelen allemaal expired zijn
+
+invoer: python input.py rapport expired
+
+omzet, hiermee kan de omzet opgevraagd worden, hierbij is een datum nodig. Je kunt ook kiezen voor 'vandaag', 'gisteren' of een volledige datum voor de omzet op die dag, of een bepaalde maand de invoer moet dan worden 2022-11 voor November 2022
+
+invoer: python input.py rapport omzet -d vandaag
+invoer: python input.py rapport omzet -d gisteren
+invoer: python input.py rapport omzet -d 2022-11-17
+invoer: python input.py rapport omzet -d 2022-11
+
+opbrengst, dit is vergelijkbaar met omzet, alleen wordt nu het resultaat getoond. Dus het verschil tussen de inkoopprijs en de verkoopprijs
+
+invoer: python input.py rapport opbrengst -d vandaag
+invoer: python input.py rapport opbrengst -d gisteren
+invoer: python input.py rapport opbrengst -d 2022-11-17
+invoer: python input.py rapport opbrengst -d 2022-11
+
+compleet, hiermee krijg je een compleet overzicht van alle producten met bijbehorende statussen van het artikelbestand
+
+invoer: python input.py rapport compleet
+
+Dit overzicht kan handig zijn voor de volgende functie:
+
+Commando: correct
+Hiermee is het mogelijk om regels in het assortiment te corrigeren. Heb je een typfout gemaakt of moet er een datum of prijs gewijzig worden dan gaat dat als volgt.
+Dit commando heeft 3 parameters nodig, de 'Id' van de artikelregel, de naam van de kolom waarin je de waarde wilt wijzigen en wat er moet komen te staan.
+Het is niet mogelijk om de kolom 'Id' te wijzigen
+
+invoer: python input.py correct --id 9 -k artikel -w elstar-appel
+
+Ter bevestiging krijg je de originele regel te zien en waar deze in is gewijzigd:
+
+De volgende regel:
+   Id artikel  prijs    date_exp    date_add    status  verk_prijs mutatie_date
+6   9   appel    2.0  2022-12-05  2022-11-23  voorraad         NaN          NaN
+Is aangepast naar:
+   Id       artikel  prijs    date_exp    date_add    status  verk_prijs mutatie_date
+6   9  elstar-appel    2.0  2022-12-05  2022-11-23  voorraad         NaN          NaN
+
+Commando: korting
+Door de onderstaande opdracht in te geven worden alle producten die morgen expired zijn 10% in prijs verlaagd:
+
+invoer: python input.py korting
