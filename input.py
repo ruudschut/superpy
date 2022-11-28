@@ -12,6 +12,12 @@ start = subparsers.add_parser("start", help='check voor csv')
 expired = subparsers.add_parser("expired", help='zet voorraad op expired')
 
 korting = subparsers.add_parser("korting", help="Artikelen die morgen expired zijn worden in prijs verlaagd")
+korting.add_argument("-kp", "--kortingspercentage", default=10, type=float, help="Geef aan hoeveel korting er gegeven moet worden")
+
+vandaag = subparsers.add_parser("vandaag", help="Welke datum staat als 'vandaag' ingesteld")
+
+advancedtime = subparsers.add_parser("advancedtime",  help="past de datum van vandaag aan, input is aantal dagen")
+advancedtime.add_argument("-ad", "--aantaldagen", default=0, type=int, help="hoeveel dagen naar voren of naar achteren")
 
 rapport = subparsers.add_parser("rapport", help='creeer een rapport voor inventory, expoired, omzet of opbrengst over een periode')
 rapport.add_argument("soort", choices=['inventory', 'expired', 'omzet', 'opbrengst', 'compleet'], help='kies het type rapport')
@@ -40,6 +46,10 @@ if args.command == 'start':
 if args.command == 'expired':
     csvbeheer.expired()  
 
+if args.command == 'vandaag':
+    csvbeheer.vandaag()
+    data.read_date_file()    
+
 if args.command == 'rapport':
     if args.soort == 'inventory':
         csvbeheer.show_inventory(args.versie)
@@ -47,28 +57,23 @@ if args.command == 'rapport':
         csvbeheer.show_expired()
     if args.soort == 'omzet':
         if args.datum == 'gisteren':
-            data.advanced_time(-1)
-            data.read_date_file
             csvbeheer.omzet(args.datum)
         elif args.datum == 'vandaag':
-            data.advanced_time(0)
-            data.read_date_file
             csvbeheer.omzet(args.datum)  
         else:
             csvbeheer.omzet(args.datum)
     if args.soort == 'opbrengst':
         if args.datum == 'gisteren':
-            data.advanced_time(-1)
-            data.read_date_file
             csvbeheer.opbrengst(args.datum)
         elif args.datum == 'vandaag':
-            data.advanced_time(0)
-            data.read_date_file
             csvbeheer.opbrengst(args.datum)  
         else:
             csvbeheer.opbrengst(args.datum)
     if args.soort == 'compleet':
         csvbeheer.compleet()
+
+if args.command == 'advancedtime':
+    data.advanced_time(args.aantaldagen)
 
 if args.command == 'buy':
     csvbeheer.buy_product(args.naam, args.prijs, args.expdate)
@@ -81,4 +86,4 @@ if args.command == 'correct':
         csvbeheer.correct(args.id, args.kolom, args.waarde)    
 
 if args.command == 'korting':
-    csvbeheer.korting()
+    csvbeheer.korting(args.kortingspercentage)
