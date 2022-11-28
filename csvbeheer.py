@@ -152,11 +152,12 @@ def opbrengst(date_input):
 
 def korting(percentage):
     df = pd.read_csv("bought.csv")
+    selectie = df.loc[(df['status'] == 'voorraad')]
     morgen = data.read_date_file()
     morgen_to_date = datetime.strptime(morgen[0], '%Y-%m-%d')
     morgen = morgen_to_date + timedelta(days=1)
     stdmorgen = morgen.strftime("%Y-%m-%d")
-    if stdmorgen in df['date_exp'].values:   
+    if stdmorgen in selectie.values:   
         df.loc[(df['date_exp'] == stdmorgen) & (df['status'] == 'voorraad'), 'prijs'] = round((df['prijs'] * (1-(percentage / 100))), 2)
         selectie = df.loc[(df['date_exp'] == stdmorgen) & (df['status'] == 'voorraad')]
         print(selectie)

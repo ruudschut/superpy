@@ -6,6 +6,18 @@ python input.py
 
 Hierachter volgt het commando. Er zijn verschillende commando's beschikbaar hieronder volgen commando's en hoe te gebruiken
 
+Als eerst de datum instellen die als 'vandaag' wordt gezien:
+
+Commando advancedtime
+Als waarde -ad of --aantaldagen geef je het aantal dagen op die je wilt voor- of teruggaan in de tijd, bijvoorbeeld -1 voor gistern, 1 voor morgen. Vul je niks in dan wordt default 0 gekozen.
+invoer: python input.py advancedtime -ad -5
+Als output krijg je het resultaat te zien
+De verschillende functies gebruiken nu de nieuw ingestelde datum als 'vandaag'
+
+Command vandaag
+Wil je weten welke datum het systeem nu als vandaags ziet dan geef je de volgende input:
+invoer: python input.py vandaag
+
 Commando: start
 invoer: python input.py start
 
@@ -96,6 +108,8 @@ Is aangepast naar:
 6   9  elstar-appel    2.0  2022-12-05  2022-11-23  voorraad         NaN          NaN
 
 Commando: korting
-Door de onderstaande opdracht in te geven worden alle producten die morgen expired zijn 10% in prijs verlaagd:
+Met de kortingsfunctie is het mogelijk om artikelen die morgen expired zijn met korting aan te bieden. Geef als input hoeveel procente korting je wilt geven, 10 voor voor 10% korting. 
+De funcie zoekt alle artikelen die nog op voorraad zijn (en morgen expired) en past de prijs aan. Als output krijg je een overzicht met aritkelen met de nieuwe prijs. 
+Wanneer er geen artikelen zijn die morgen expired zijn dan krijg je daar ook bericht van. Deze functie gebruikt ook de ingestelde datum (advancedtime) als vandaag.
 
-invoer: python input.py korting
+invoer: python input.py korting -kp 20
