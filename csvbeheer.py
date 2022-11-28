@@ -152,11 +152,14 @@ def opbrengst(date_input):
 
 def korting(percentage):
     df = pd.read_csv("bought.csv")
+    # selectie maken van alle artikelen die op voorraad zijn
     selectie = df.loc[(df['status'] == 'voorraad')]
+    # huidige 'vandaag' datum inlezen en die met 1 dag ophogen
     morgen = data.read_date_file()
     morgen_to_date = datetime.strptime(morgen[0], '%Y-%m-%d')
     morgen = morgen_to_date + timedelta(days=1)
     stdmorgen = morgen.strftime("%Y-%m-%d")
+    # alle artikelen die 'morgen' expirede zijn filteren en de prijs verlagen met de ingegeven korting
     if stdmorgen in selectie.values:   
         df.loc[(df['date_exp'] == stdmorgen) & (df['status'] == 'voorraad'), 'prijs'] = round((df['prijs'] * (1-(percentage / 100))), 2)
         selectie = df.loc[(df['date_exp'] == stdmorgen) & (df['status'] == 'voorraad')]
